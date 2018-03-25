@@ -27,6 +27,17 @@ namespace RequestObfuscator.Api.Tampering
                     return;
                 }
 
+                if (_sharedState.AbortRequest)
+                {
+                    Logger.Debug("Aborting request:");
+                    LogRequest(session);
+
+                    session.Abort();
+                    Logger.Debug("Request aborted.");
+
+                    return;
+                }
+
                 Logger.Debug("Tampering request:");
                 LogRequest(session);
 

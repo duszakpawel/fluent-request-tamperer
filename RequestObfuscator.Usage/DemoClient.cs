@@ -14,12 +14,13 @@ namespace RequestObfuscator.Usage
 
             api.ForRequest()
                 .WithPath(path => path.Contains("/api/users/2"))
-                .MethodType(HttpMethodEnum.GET)
-                .BeginTamper()
-                .TamperFragment("test")
-                .TamperHeader("test", "test2")
-                .TamperMethodType(HttpMethodEnum.POST)
-                .TamperPath(path => path.Replace("/api/users/2", "/api/users/3"));
+                //.MethodType(HttpMethodEnum.GET)
+                .AbortRequest();
+                //.BeginTamper()
+                //.TamperFragment("test")
+                //.TamperHeader("test", "test2")
+                //.TamperMethodType(HttpMethodEnum.POST)
+                //.TamperPath(path => path.Replace("/api/users/2", "/api/users/3"));
 
             return api;
         }

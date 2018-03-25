@@ -20,7 +20,7 @@ namespace RequestObfuscator.Api
         List<Parameter> WhenConditions { get; set; }
         List<Parameter> TamperRules { get; set; }
         Func<string, bool> StrWhenCondition { get; set; }
-
+        bool AbortRequest { get; set; }
         Action<string> StrTamperFunc { get; set; }
     }
 }

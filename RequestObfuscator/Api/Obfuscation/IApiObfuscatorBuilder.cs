@@ -4,7 +4,7 @@ using RequestObfuscator.Enums;
 
 namespace RequestObfuscator.Api.Obfuscation
 {
-    public interface IApiObfuscatorBuilder
+    public interface IApiObfuscatorBuilder : IApiObfuscatorRequestBuilderBase
     {
         IApiObfuscatorBuilder WithPath(Func<string, bool> isMetPathTransformer);
         IApiObfuscatorBuilder WithQuery(Func<string, bool> isMetPathTransformer);
@@ -13,9 +13,8 @@ namespace RequestObfuscator.Api.Obfuscation
         IApiObfuscatorBuilder RequestContentType(RequestContentTypeEnum contentType);
         IRequestTampererBuilder BeginTamper();
         IRequestTampererBuilder BeginTamper(Action<string> tamperBodyFunc = null);
-
     }
-    public interface IApiObfuscatorBuilder<TRequest> where TRequest : class
+    public interface IApiObfuscatorBuilder<TRequest> : IApiObfuscatorRequestBuilderBase where TRequest : class
     {
         IRequestTampererBuilder<TRequest> BeginTamper(Action<TRequest> tamperBodyFunc = null);
         IApiObfuscatorBuilder<TRequest> WithPath(Func<string, bool> isMetPathTransformer);
@@ -23,5 +22,10 @@ namespace RequestObfuscator.Api.Obfuscation
         IApiObfuscatorBuilder<TRequest> WithFragment(string fragment);
         IApiObfuscatorBuilder<TRequest> MethodType(HttpMethodEnum method);
         IApiObfuscatorBuilder<TRequest> RequestContentType(RequestContentTypeEnum contentType);
+    }
+
+    public interface IApiObfuscatorRequestBuilderBase
+    {
+        IRequestTamperer AbortRequest();
     }
 }

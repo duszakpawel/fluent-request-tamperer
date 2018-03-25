@@ -15,6 +15,7 @@ namespace RequestObfuscator.Api
         public List<Parameter> TamperRules { get; set; }
         public Func<string, bool> StrWhenCondition { get; set; }
         public Action<string> StrTamperFunc { get; set; }
+        public bool AbortRequest { get; set; }
 
         public ApiSharedState() { }
         public ApiSharedState(ApiSharedState sharedState)
@@ -24,6 +25,9 @@ namespace RequestObfuscator.Api
             RequestContentType = sharedState.RequestContentType;
             WhenConditions = new List<Parameter>(sharedState.WhenConditions);
             TamperRules = new List<Parameter>(sharedState.TamperRules);
+            AbortRequest = sharedState.AbortRequest;
+            StrTamperFunc = sharedState.StrTamperFunc;
+            StrWhenCondition = sharedState.StrWhenCondition;
         }
     }
 

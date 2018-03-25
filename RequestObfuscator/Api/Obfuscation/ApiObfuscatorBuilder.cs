@@ -142,5 +142,14 @@ namespace RequestObfuscator.Api.Obfuscation
 
             return _requestTampererBuilder;
         }
+
+        public IRequestTamperer AbortRequest()
+        {
+            _sharedState.AbortRequest = true;
+
+            _requestTampererBuilder = new RequestTampererBuilder(_sharedState);
+
+            return new RequestTamperer(_sharedState);
+        }
     }
 }
