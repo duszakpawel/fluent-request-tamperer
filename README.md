@@ -17,4 +17,5 @@ The following interfaces are for public use:
 `
 IApiBuilder, IApiObfuscatorBuilder, IApiBuilder, IRequestTampererBuilder
 `
+
 You can find some examples of use under Demo project.
