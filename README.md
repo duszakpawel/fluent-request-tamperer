@@ -12,10 +12,4 @@ Set the proxy host to 127.0.0.1 and port to 8888. Make sure your settings are ju
 Disclaimer:
 The creators give up their rights and responsibilities for everything will happen due to use of this software. Make sure all you want to do is legal.
 
-The following interfaces are for public use:
-
-`
-IApiBuilder, IApiObfuscatorBuilder, IApiBuilder, IRequestTampererBuilder
-`
-
 You can find some examples of use under Demo project.
