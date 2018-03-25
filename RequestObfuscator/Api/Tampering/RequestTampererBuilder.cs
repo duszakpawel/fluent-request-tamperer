@@ -7,11 +7,11 @@ using Fiddler;
 
 namespace RequestObfuscator.Api.Tampering
 {
-    public class RequestTampererBuilder<TRequest> : IRequestTampererBuilder<TRequest> where TRequest : class
+    internal class RequestTampererBuilder<TRequest> : IRequestTampererBuilder<TRequest> where TRequest : class
     {
 
         private readonly IApiSharedState<TRequest> _sharedState;
-        public RequestTampererBuilder(IApiSharedState<TRequest> sharedState)
+        internal RequestTampererBuilder(IApiSharedState<TRequest> sharedState)
         {
             _sharedState = sharedState;
         }
@@ -78,11 +78,11 @@ namespace RequestObfuscator.Api.Tampering
         }
     }
 
-    public class RequestTampererBuilder : IRequestTampererBuilder
+    internal class RequestTampererBuilder : IRequestTampererBuilder
     {
 
         private readonly IApiSharedState<string> _sharedState;
-        public RequestTampererBuilder(IApiSharedState<string> sharedState)
+        internal RequestTampererBuilder(IApiSharedState<string> sharedState)
         {
             _sharedState = sharedState;
         }

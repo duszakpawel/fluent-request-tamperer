@@ -2,7 +2,7 @@
 
 namespace RequestObfuscator.Api
 {
-    public interface IApiMethodDefinition
+    internal interface IApiMethodDefinition
     {
         void BeforeRequest(Session session);
     }

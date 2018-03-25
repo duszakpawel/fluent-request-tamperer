@@ -5,9 +5,9 @@ using NLog.Targets;
 
 namespace RequestObfuscator
 {
-    public static class LoggerConfig
+    internal static class LoggerConfig
     {
-        public static void Init()
+        internal static void Init()
         {
             var config = new LoggingConfiguration();
 

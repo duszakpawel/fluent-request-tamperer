@@ -8,12 +8,12 @@ using RequestObfuscator.Api.Parameters.RequestParameters;
 
 namespace RequestObfuscator.Api.Obfuscation
 {
-    public class ApiObfuscatorBuilder<TRequest> : ApiObfuscatorBuilder, IApiMethodDefinition, IApiObfuscatorBuilder<TRequest> where TRequest : class
+    internal class ApiObfuscatorBuilder<TRequest> : ApiObfuscatorBuilder, IApiMethodDefinition, IApiObfuscatorBuilder<TRequest> where TRequest : class
     {
         private RequestTampererBuilder<TRequest> _requestTampererBuilder;
         private IApiSharedState<TRequest> _sharedState;
 
-        public ApiObfuscatorBuilder(IApiSharedState<TRequest> state)
+        internal ApiObfuscatorBuilder(IApiSharedState<TRequest> state)
         {
             _sharedState = state;
         }
@@ -72,17 +72,17 @@ namespace RequestObfuscator.Api.Obfuscation
         }
     }
 
-    public class ApiObfuscatorBuilder : IApiMethodDefinition, IApiObfuscatorBuilder
+    internal class ApiObfuscatorBuilder : IApiMethodDefinition, IApiObfuscatorBuilder
     {
         private RequestTampererBuilder _requestTampererBuilder;
         private IApiSharedState<string> _sharedState;
 
-        public ApiObfuscatorBuilder()
+        internal ApiObfuscatorBuilder()
         {
 
         }
 
-        public ApiObfuscatorBuilder(IApiSharedState<string> state)
+        internal ApiObfuscatorBuilder(IApiSharedState<string> state)
         {
             _sharedState = state;
         }

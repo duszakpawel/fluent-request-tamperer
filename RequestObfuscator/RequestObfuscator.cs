@@ -130,7 +130,7 @@ namespace RequestObfuscator
             return true;
         }
 
-        public static bool UninstallCertificate()
+        private static bool UninstallCertificate()
         {
             if (CertMaker.rootCertExists())
             {

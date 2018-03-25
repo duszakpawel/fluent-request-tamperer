@@ -11,12 +11,12 @@ using RequestObfuscator.Api.Parameters.RequestParameters;
 
 namespace RequestObfuscator.Api
 {
-    public class ApiBuilder : IApiBuilder
+    internal class ApiBuilder : IApiBuilder
     {
         private ApiSharedState _sharedState;
         private List<IApiMethodDefinition> _methodDefinitions;
 
-        public ApiBuilder()
+        internal ApiBuilder()
         {
             _sharedState = new ApiSharedState()
             {
@@ -109,7 +109,6 @@ namespace RequestObfuscator.Api
             return this;
         }
 
-        // Quick workaround for not providing the type of request body
         public IApiObfuscatorBuilder ForRequest()
         {
             var sharedStare = new ApiSharedState<string>(_sharedState);

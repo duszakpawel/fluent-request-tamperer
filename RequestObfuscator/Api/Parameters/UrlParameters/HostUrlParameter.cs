@@ -3,21 +3,21 @@ using System;
 
 namespace RequestObfuscator.Api.Parameters.Parameters
 {
-    public class HostParameter : KeyParameter<string>
+    internal class HostParameter : KeyParameter<string>
     {
-        public HostParameter(string host)
+        internal HostParameter(string host)
         {
             Key = host;
         }
 
-        public override bool IsMet(Session session)
+        internal override bool IsMet(Session session)
         {
             var uri = new Uri(session.fullUrl);
 
             return uri.Host == Key;
         }
 
-        public override Session Transform(Session session)
+        internal override Session Transform(Session session)
         {
             var uri = new UriBuilder(session.fullUrl)
             {

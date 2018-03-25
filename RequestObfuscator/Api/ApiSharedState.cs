@@ -6,7 +6,7 @@ using RequestObfuscator.Enums;
 
 namespace RequestObfuscator.Api
 {
-    public class ApiSharedState : IApiSharedState
+    internal class ApiSharedState : IApiSharedState
     {
         public IResponseSerializer ResponseSerializer { get; set; }
         public Type RequestType { get; set; }
@@ -17,8 +17,8 @@ namespace RequestObfuscator.Api
         public Action<string> StrTamperFunc { get; set; }
         public bool AbortRequest { get; set; }
 
-        public ApiSharedState() { }
-        public ApiSharedState(ApiSharedState sharedState)
+        internal ApiSharedState() { }
+        internal ApiSharedState(ApiSharedState sharedState)
         {
             ResponseSerializer = sharedState.ResponseSerializer;
             RequestType = sharedState.RequestType;
@@ -31,7 +31,7 @@ namespace RequestObfuscator.Api
         }
     }
 
-    public class ApiSharedState<TRequest> : ApiSharedState, IApiSharedState<TRequest> where TRequest : class
+    internal class ApiSharedState<TRequest> : ApiSharedState, IApiSharedState<TRequest> where TRequest : class
     {
         public Action<TRequest> TamperFunc { get; set; }
         public Func<TRequest, bool> WhenCondition { get; set; }

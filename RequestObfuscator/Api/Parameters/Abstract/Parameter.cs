@@ -2,9 +2,9 @@
 
 namespace RequestObfuscator.Api.Parameters
 {
-    public abstract class Parameter
+    internal abstract class Parameter
     {
-        public abstract Session Transform(Session session);
-        public abstract bool IsMet(Session session);
+        internal abstract Session Transform(Session session);
+        internal abstract bool IsMet(Session session);
     }
 }

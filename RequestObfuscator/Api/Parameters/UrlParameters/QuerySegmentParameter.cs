@@ -3,29 +3,29 @@ using System;
 
 namespace RequestObfuscator.Api.Parameters.Parameters
 {
-    public class QuerySegmentParameter : KeyValueParameter<string, string>
+    internal class QuerySegmentParameter : KeyValueParameter<string, string>
     {
         private Func<string, string> _pathTransformer;
         private Func<string, bool> _isMetPathTransformer;
 
-        public QuerySegmentParameter(Func<string, bool> isMetPathTransformer = null)
+        internal QuerySegmentParameter(Func<string, bool> isMetPathTransformer = null)
         {
             _isMetPathTransformer = isMetPathTransformer;
         }
 
-        public QuerySegmentParameter(Func<string, string> pathTransformer = null)
+        internal QuerySegmentParameter(Func<string, string> pathTransformer = null)
         {
             _pathTransformer = pathTransformer;
         }
 
-        public override bool IsMet(Session session)
+        internal override bool IsMet(Session session)
         {
             var uri = new UriBuilder(session.fullUrl);
 
             return _isMetPathTransformer == null ? true : _isMetPathTransformer(uri.Query);
         }
 
-        public override Session Transform(Session session)
+        internal override Session Transform(Session session)
         {
             var uri = new UriBuilder(session.fullUrl);
 

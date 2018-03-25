@@ -2,20 +2,20 @@
 
 namespace RequestObfuscator.Api.Parameters.RequestParameters
 {
-    public class HeaderParameter : KeyValueParameter<string, string>
+    internal class HeaderParameter : KeyValueParameter<string, string>
     {
-        public HeaderParameter(string key, string value)
+        internal HeaderParameter(string key, string value)
         {
             Key = key;
             Value = value;
         }
 
-        public override bool IsMet(Session session)
+        internal override bool IsMet(Session session)
         {
             return session.RequestHeaders.Exists(Key);
         }
 
-        public override Session Transform(Session session)
+        internal override Session Transform(Session session)
         {
             if (session.RequestHeaders.Exists(Key))
             {

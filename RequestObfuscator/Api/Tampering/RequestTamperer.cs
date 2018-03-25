@@ -6,12 +6,12 @@ using RequestObfuscator.Exceptions;
 
 namespace RequestObfuscator.Api.Tampering
 {
-    public abstract class RequestTampererBase<TRequest, TSharedState> : IRequestTamperer where TRequest : class where TSharedState : IApiSharedState
+    internal abstract class RequestTampererBase<TRequest, TSharedState> : IRequestTamperer where TRequest : class where TSharedState : IApiSharedState
     {
         protected TSharedState _sharedState;
         private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public RequestTampererBase(TSharedState sharedState)
+        internal RequestTampererBase(TSharedState sharedState)
         {
             _sharedState = sharedState;
         }
@@ -78,11 +78,11 @@ namespace RequestObfuscator.Api.Tampering
             }
         }
 
-        protected abstract TRequest DeserializeResponse(Session session);
-        protected abstract void TamperRequest(TRequest request);
-        protected abstract void SaveRequest(Session session, TRequest request);
-        protected abstract bool WhenCondition(Session session, TRequest request, TSharedState sharedState);
-        protected void TamperRules(Session session, IApiSharedState sharedState)
+        protected internal abstract TRequest DeserializeResponse(Session session);
+        protected internal abstract void TamperRequest(TRequest request);
+        protected internal abstract void SaveRequest(Session session, TRequest request);
+        protected internal abstract bool WhenCondition(Session session, TRequest request, TSharedState sharedState);
+        protected internal void TamperRules(Session session, IApiSharedState sharedState)
         {
             sharedState.TamperRules.ForEach(tamper =>
             {
@@ -91,18 +91,18 @@ namespace RequestObfuscator.Api.Tampering
         }
     }
 
-    public class RequestTamperer<TRequest> : RequestTampererBase<TRequest, IApiSharedState<TRequest>> where TRequest : class
+    internal class RequestTamperer<TRequest> : RequestTampererBase<TRequest, IApiSharedState<TRequest>> where TRequest : class
     {
-        public RequestTamperer(IApiSharedState<TRequest> sharedState) : base(sharedState)
+        internal RequestTamperer(IApiSharedState<TRequest> sharedState) : base(sharedState)
         {
         }
 
-        protected override TRequest DeserializeResponse(Session session)
+        protected internal override TRequest DeserializeResponse(Session session)
         {
             return _sharedState.ResponseSerializer.Deserialize<TRequest>(session.GetRequestBodyAsString());
         }
 
-        protected override void TamperRequest(TRequest request)
+        protected internal override void TamperRequest(TRequest request)
         {
             if (request != null)
             {
@@ -110,12 +110,12 @@ namespace RequestObfuscator.Api.Tampering
             }
         }
 
-        protected override void SaveRequest(Session session, TRequest request)
+        protected internal override void SaveRequest(Session session, TRequest request)
         {
             session.utilSetRequestBody(_sharedState.ResponseSerializer.Serialize(request));
         }
 
-        protected override bool WhenCondition(Session session, TRequest request, IApiSharedState<TRequest> sharedState)
+        protected internal override bool WhenCondition(Session session, TRequest request, IApiSharedState<TRequest> sharedState)
         {
             if (_sharedState.WhenConditions.Any(x => !x.IsMet(session)))
             {
@@ -131,18 +131,18 @@ namespace RequestObfuscator.Api.Tampering
         }
     }
 
-    public class RequestTamperer : RequestTampererBase<string, IApiSharedState<string>>
+    internal class RequestTamperer : RequestTampererBase<string, IApiSharedState<string>>
     {
-        public RequestTamperer(IApiSharedState<string> sharedState) : base(sharedState)
+        internal RequestTamperer(IApiSharedState<string> sharedState) : base(sharedState)
         {
         }
 
-        protected override string DeserializeResponse(Session session)
+        protected internal override string DeserializeResponse(Session session)
         {
             return session.GetRequestBodyAsString();
         }
 
-        protected override void TamperRequest(string request)
+        protected internal override void TamperRequest(string request)
         {
             if (request != null)
             {
@@ -150,12 +150,12 @@ namespace RequestObfuscator.Api.Tampering
             }
         }
 
-        protected override void SaveRequest(Session session, string request)
+        protected internal override void SaveRequest(Session session, string request)
         {
             session.utilSetRequestBody(request);
         }
 
-        protected override bool WhenCondition(Session session, string request, IApiSharedState<string> sharedState)
+        protected internal override bool WhenCondition(Session session, string request, IApiSharedState<string> sharedState)
         {
             if (_sharedState.WhenConditions.Any(x => !x.IsMet(session)))
             {
