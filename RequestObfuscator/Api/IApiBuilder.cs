@@ -16,9 +16,10 @@ namespace RequestObfuscator.Api
         IApiBuilder WithFragment(string fragment);
         IApiBuilder TamperHeader(string key, string value);
         IApiBuilder RequestContentType(RequestContentTypeEnum contentType);
-        IApiObfuscatorBuilder<TRequest> When<TRequest>() where TRequest : class;
-        IApiObfuscatorBuilder<object> When();
-        IApiObfuscatorBuilder<TRequest> When<TRequest>(Func<TRequest, bool> condition) where TRequest : class;
+        IApiObfuscatorBuilder<TRequest> ForRequest<TRequest>() where TRequest : class;
+        IApiObfuscatorBuilder ForRequest();
+        IApiObfuscatorBuilder ForRequest(Func<string, bool> condition);
+        IApiObfuscatorBuilder<TRequest> ForRequest<TRequest>(Func<TRequest, bool> condition) where TRequest : class;
         IEnumerable<Action<Session>> Build();
     }
 }

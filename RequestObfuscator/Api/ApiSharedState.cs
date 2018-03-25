@@ -13,6 +13,8 @@ namespace RequestObfuscator.Api
         public RequestContentTypeEnum RequestContentType { get; set; }
         public List<Parameter> WhenConditions { get; set; }
         public List<Parameter> TamperRules { get; set; }
+        public Func<string, bool> StrWhenCondition { get; set; }
+        public Action<string> StrTamperFunc { get; set; }
 
         public ApiSharedState() { }
         public ApiSharedState(ApiSharedState sharedState)
@@ -29,6 +31,10 @@ namespace RequestObfuscator.Api
     {
         public Action<TRequest> TamperFunc { get; set; }
         public Func<TRequest, bool> WhenCondition { get; set; }
+
+        public ApiSharedState()
+        {
+        }
 
         public ApiSharedState(ApiSharedState sharedState) : base(sharedState)
         {

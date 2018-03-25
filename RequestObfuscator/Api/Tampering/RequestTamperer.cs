@@ -6,11 +6,12 @@ using RequestObfuscator.Exceptions;
 
 namespace RequestObfuscator.Api.Tampering
 {
-    public class RequestTamperer<TRequest> : IRequestTamperer where TRequest : class
+    public abstract class RequestTampererBase<TRequest, TSharedState> : IRequestTamperer where TRequest : class where TSharedState : IApiSharedState
     {
-        private readonly IApiSharedState<TRequest> _sharedState;
+        protected TSharedState _sharedState;
         private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
-        public RequestTamperer(IApiSharedState<TRequest> sharedState)
+
+        public RequestTampererBase(TSharedState sharedState)
         {
             _sharedState = sharedState;
         }
@@ -19,35 +20,22 @@ namespace RequestObfuscator.Api.Tampering
         {
             try
             {
-                TRequest request = null;
+                TRequest request = DeserializeResponse(session);
 
-                if (_sharedState.RequestType != typeof(object))
-                {
-                    request = _sharedState.ResponseSerializer.Deserialize<TRequest>(session.GetRequestBodyAsString());
-                }
-
-                if (_sharedState.WhenConditions.Any(x => !x.IsMet(session)))
-                {
-                    return;
-                }
-
-                if(request != null && _sharedState.WhenCondition != null && !_sharedState.WhenCondition(request))
-                {
+                if(!WhenCondition(session, request, _sharedState))
+                { 
                     return;
                 }
 
                 Logger.Debug("Tampering request:");
                 LogRequest(session);
 
-                _sharedState.TamperRules.ForEach(tamper =>
-                {
-                    tamper.Transform(session);
-                });
+                TamperRules(session, _sharedState);
 
                 if (request != null)
                 {
-                    _sharedState.TamperFunc?.Invoke(request);
-                    session.utilSetRequestBody(_sharedState.ResponseSerializer.Serialize(request));
+                    TamperRequest(request);
+                    SaveRequest(session, request);
                 }
 
                 Logger.Debug("Tampered request:");
@@ -57,7 +45,7 @@ namespace RequestObfuscator.Api.Tampering
             {
                 Logger.Fatal(e, "Error during deserialization.");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logger.Fatal(e, "Unexpected exception occured.");
             }
@@ -77,6 +65,98 @@ namespace RequestObfuscator.Api.Tampering
             {
                 Logger.Debug("Request body: " + requestBody);
             }
+        }
+
+        protected abstract TRequest DeserializeResponse(Session session);
+        protected abstract void TamperRequest(TRequest request);
+        protected abstract void SaveRequest(Session session, TRequest request);
+        protected abstract bool WhenCondition(Session session, TRequest request, TSharedState sharedState);
+        protected void TamperRules(Session session, IApiSharedState sharedState)
+        {
+            sharedState.TamperRules.ForEach(tamper =>
+            {
+                tamper.Transform(session);
+            });
+        }
+    }
+
+    public class RequestTamperer<TRequest> : RequestTampererBase<TRequest, IApiSharedState<TRequest>> where TRequest : class
+    {
+        public RequestTamperer(IApiSharedState<TRequest> sharedState) : base(sharedState)
+        {
+        }
+
+        protected override TRequest DeserializeResponse(Session session)
+        {
+            return _sharedState.ResponseSerializer.Deserialize<TRequest>(session.GetRequestBodyAsString());
+        }
+
+        protected override void TamperRequest(TRequest request)
+        {
+            if (request != null)
+            {
+                _sharedState.TamperFunc?.Invoke(request);
+            }
+        }
+
+        protected override void SaveRequest(Session session, TRequest request)
+        {
+            session.utilSetRequestBody(_sharedState.ResponseSerializer.Serialize(request));
+        }
+
+        protected override bool WhenCondition(Session session, TRequest request, IApiSharedState<TRequest> sharedState)
+        {
+            if (_sharedState.WhenConditions.Any(x => !x.IsMet(session)))
+            {
+                return false;
+            }
+
+            if (request != null && _sharedState.WhenCondition != null && !_sharedState.WhenCondition(request))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    public class RequestTamperer : RequestTampererBase<string, IApiSharedState<string>>
+    {
+        public RequestTamperer(IApiSharedState<string> sharedState) : base(sharedState)
+        {
+        }
+
+        protected override string DeserializeResponse(Session session)
+        {
+            return session.GetRequestBodyAsString();
+        }
+
+        protected override void TamperRequest(string request)
+        {
+            if (request != null)
+            {
+                _sharedState.StrTamperFunc?.Invoke(request);
+            }
+        }
+
+        protected override void SaveRequest(Session session, string request)
+        {
+            session.utilSetRequestBody(request);
+        }
+
+        protected override bool WhenCondition(Session session, string request, IApiSharedState<string> sharedState)
+        {
+            if (_sharedState.WhenConditions.Any(x => !x.IsMet(session)))
+            {
+                return false;
+            }
+
+            if (request != null && _sharedState.StrWhenCondition != null && !_sharedState.StrWhenCondition(request))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

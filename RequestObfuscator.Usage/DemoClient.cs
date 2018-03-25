@@ -12,7 +12,7 @@ namespace RequestObfuscator.Usage
                .WithHost("reqres.in")
                .RequestContentType(RequestContentTypeEnum.Json);
 
-            api.When()
+            api.ForRequest()
                 .WithPath(path => path.Contains("/api/users/2"))
                 .MethodType(HttpMethodEnum.GET)
                 .BeginTamper()

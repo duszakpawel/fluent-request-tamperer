@@ -19,5 +19,8 @@ namespace RequestObfuscator.Api
         Type RequestType { get; set; }
         List<Parameter> WhenConditions { get; set; }
         List<Parameter> TamperRules { get; set; }
+        Func<string, bool> StrWhenCondition { get; set; }
+
+        Action<string> StrTamperFunc { get; set; }
     }
 }

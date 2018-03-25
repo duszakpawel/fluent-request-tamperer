@@ -18,7 +18,7 @@ namespace RequestObfuscator.Api
 
         public ApiBuilder()
         {
-            _sharedState = new ApiSharedState
+            _sharedState = new ApiSharedState()
             {
                 ResponseSerializer = new JsonResponseSerializer(),
                 WhenConditions = new List<Parameter>(),
@@ -62,12 +62,12 @@ namespace RequestObfuscator.Api
             return this;
         }
 
-        public IApiObfuscatorBuilder<TRequest> When<TRequest>() where TRequest : class
+        public IApiObfuscatorBuilder<TRequest> ForRequest<TRequest>() where TRequest : class
         {
-            return When<TRequest>(condition: null);
+            return ForRequest<TRequest>(condition: null);
         }
 
-        public IApiObfuscatorBuilder<TRequest> When<TRequest>(Func<TRequest, bool> condition) where TRequest : class
+        public IApiObfuscatorBuilder<TRequest> ForRequest<TRequest>(Func<TRequest, bool> condition) where TRequest : class
         {
             var sharedStare = new ApiSharedState<TRequest>(_sharedState)
             {
@@ -110,9 +110,27 @@ namespace RequestObfuscator.Api
         }
 
         // Quick workaround for not providing the type of request body
-        public IApiObfuscatorBuilder<object> When()
+        public IApiObfuscatorBuilder ForRequest()
         {
-            return When<object>(condition: null);
+            var sharedStare = new ApiSharedState<string>(_sharedState);
+
+            IApiObfuscatorBuilder methodDefinition = new ApiObfuscatorBuilder(new ApiSharedState<string>(sharedStare) as IApiSharedState<string>);
+            _methodDefinitions.Add(methodDefinition as IApiMethodDefinition);
+
+            return methodDefinition;
+        }
+
+        public IApiObfuscatorBuilder ForRequest(Func<string, bool> condition)
+        {
+            var sharedStare = new ApiSharedState(_sharedState)
+            {
+                StrWhenCondition = condition,
+            };
+
+            IApiObfuscatorBuilder methodDefinition = new ApiObfuscatorBuilder(new ApiSharedState<string>(sharedStare) as IApiSharedState<string>);
+            _methodDefinitions.Add(methodDefinition as IApiMethodDefinition);
+
+            return methodDefinition;
         }
     }
 }
