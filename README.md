@@ -9,7 +9,8 @@ This library makes it easier to catch requests from machine and edit them before
 
 Set the proxy host to 127.0.0.1 and port to 8888. Make sure your settings are just like in the picture above.
 
-Disclaimer:
+DISCLAIMER:
+
 The creators give up their rights and responsibilities for everything will happen due to use of this software. Make sure all you want to do is legal.
 
 You can find some examples of use under Demo project.
