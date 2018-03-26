@@ -1,11 +1,9 @@
 ﻿Feature: IEnumerableExtensions
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to execute an Action on every element of IEnumerable
+	I want to be told how many times the action was invoked
 
-@mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+@extensions
+Scenario: Execute ForEach extension
+	Given I have IEnumerable of 5 object
+	When I invoke ForEach extension on this IEnumerable with any Action
+	Then the Action should be invoked 5 times
