@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestObfuscator.Shared", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestObfuscator.Demo", "RequestObfuscator.Usage\RequestObfuscator.Demo.csproj", "{C83BC92D-801E-44AD-9DAF-952FFA64F6A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestObfuscator.Tests", "RequestObfuscator.Tests\RequestObfuscator.Tests.csproj", "{351BFF47-9255-42F5-B738-26731B809BCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C83BC92D-801E-44AD-9DAF-952FFA64F6A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C83BC92D-801E-44AD-9DAF-952FFA64F6A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C83BC92D-801E-44AD-9DAF-952FFA64F6A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{351BFF47-9255-42F5-B738-26731B809BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{351BFF47-9255-42F5-B738-26731B809BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{351BFF47-9255-42F5-B738-26731B809BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{351BFF47-9255-42F5-B738-26731B809BCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
